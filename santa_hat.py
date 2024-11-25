@@ -1,3 +1,15 @@
+"""
+santa_hat.py
+
+Description:
+    A Python script that uses YOLO for real-time face detection to overlay a Santa hat on detected faces.
+    Includes functionality to save images and dynamic numbering for saved photos.
+
+Author: Rajitha de Silva
+Date: 2024-11-25
+Version: 1.0.0
+"""
+
 import cv2
 from ultralytics import YOLO
 import numpy as np

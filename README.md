@@ -16,15 +16,16 @@ This project uses YOLO face detection to overlay a Santa hat on the head of the 
 
 Here’s an example of the Santa hat detection in action:
 
-![Santa Hat Detection Demo](demo.webp)
+<img src="demo.webp" alt="Santa Hat Detection Demo" width="500">
+
 ---
 
 ## Installation
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/your-username/santa-hat-yolo.git
-cd santa-hat-yolo
+git clone https://github.com/rajithadesilva/yolo-santa-hat.git
+cd yolo-santa-hat
 ```
 
 ### 2. Install Dependencies

@@ -1,78 +1,194 @@
-# Santa Hat + Face Detection with YOLO 🎅📸
+# Santa Hat + Face Detection (YOLO & MediaPipe)
 
-This project uses YOLO face detection to overlay a Santa hat on the head of the detected faces in real-time. It provides fun and interactive functionality for capturing festive photos.
+This project uses real-time face detection to overlay a Santa hat on detected faces using your webcam.  
+You can choose between a **YOLO-based** detector or a **MediaPipe Face Mesh** model that also supports **head tilt (roll)**.
 
----
-
-## Features
-- Real-time face detection using the YOLO model.
-- Dynamically scaled and positioned Santa hats on detected faces.
-- Saves photos with a single key press (`SPACE`).
-- Automatically resumes numbering of saved images if the script is re-run.
-- Full-screen live display with clear instructions.
+Perfect for festive photo booths, office parties, or just having fun 🎅
 
 ---
-## Example Output
 
-Here’s an example of the Santa hat detection in action:
+## Demo
 
 <img src="demo.webp" alt="Santa Hat Detection Demo" width="500">
 
 ---
 
+## Backends at a Glance
+
+| Script              | Backend              | Pros                                           | Notes                                      |
+|---------------------|----------------------|------------------------------------------------|--------------------------------------------|
+| `santa_hat_yolo.py` | YOLOv8 face detector | Very robust bounding-box face detection        | Uses `yolov8n-face.pt` (included)          |
+| `santa_hat_mp.py`   | MediaPipe Face Mesh  | Uses landmarks, supports head roll estimation  | Optional face mesh visualisation           |
+
+---
+
+## Features
+
+- 🔍 **Real-time** face detection  
+- 🎅 **Dynamic Santa hat overlay** scaled to face size  
+- ↻ **Auto-resume numbering** for captured photos  
+- 🖼 **Full-screen UI** with status text  
+- 💾 Save photos with a single key press  
+- 🎚 Adjustable scale, offsets, and rotation (MediaPipe)
+
+---
+
 ## Installation
 
-### 1. Clone the Repository
+### 1. Clone the repository
+
 ```bash
 git clone https://github.com/rajithadesilva/yolo-santa-hat.git
 cd yolo-santa-hat
 ```
 
-### 2. Install Dependencies
-Ensure you have Python installed and then run:
+### 2. (Optional) Create a virtual environment
+
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
+```
+
+### 3. Install dependencies
+
 ```bash
 pip install -r requirements.txt
 ```
+
 ---
+
 ## Usage
 
-### Run the Script
+Choose either backend.
+
+### YOLO backend
+
 ```bash
-python santa_hat.py
+python santa_hat_yolo.py
 ```
+
+- Uses YOLOv8 face detector (`yolov8n-face.pt`)
+- Places/Scales hat using bounding boxes
+
+### MediaPipe backend
+
+```bash
+python santa_hat_mp.py
+```
+
+- Uses Face Mesh landmarks
+- Supports head roll (tilt) and landmark-based hat placement
+- Optional mesh overlay for debugging
+
 ---
+
 ## Controls
 
-- **Press `SPACE`**: Capture the current frame as a photo. Photos are saved in the `photos` directory.
-- **Press `Q`**: Quit the application.
----
-## Customization
+| Key      | Action                                 |
+|----------|-----------------------------------------|
+| SPACE    | Capture photo into `photos/`            |
+| q        | Quit                                    |
 
-### Adjust Santa Hat Position and Size
-You can adjust the size and position of the Santa hat by modifying the following variables in `santa_hat.py`:
+When a photo is taken:
+- File is saved as: `photos/photo_<N>.png`
+- “Photo Saved!” appears briefly at the centre
+
+---
+
+## Configuration
+
+Both scripts share:
+
+- **Camera index**
+
+  ```python
+  cap = cv2.VideoCapture(0)
+  ```
+
+- **Screen resolution** (for full-screen scaling)
+
+  ```python
+  screen_width = 1920
+  screen_height = 1080
+  ```
+
+- **Output directory**
+
+  ```python
+  output_dir = "photos"
+  ```
+
+---
+
+### YOLO Settings (`santa_hat_yolo.py`)
 
 ```python
-HAT_SCALE_FACTOR = 1.5  # Adjust hat size relative to face width
-HAT_OFFSET_X = -0.1     # Horizontal offset as a fraction of face width (-1.0 to 1.0)
-HAT_OFFSET_Y = -0.4     # Vertical offset as a fraction of face height (-1.0 to 1.0)
+HAT_SCALE_FACTOR = 1.5
+HAT_OFFSET_X = -0.1
+HAT_OFFSET_Y = -0.4
+conf_threshold = 0.25
+img_size = 1280
+max_detections = 1000
 ```
-### Add a different hat
-- Replace the santa_hat.png image with a new transparent hat image of your choosing.
-  
-### Change Output Directory
-By default, photos are saved in the `photos/` directory. You can change this by modifying the following line in `santa_hat.py`:
+
+---
+
+### MediaPipe Settings (`santa_hat_mp.py`)
 
 ```python
-output_dir = "your_new_directory_name"
+HAT_SCALE_FACTOR = 1.6
+HAT_VERTICAL_FACTOR = 0.55
+HAT_ROTATION_FACTOR = 0.2   # adds ±45° tilt
+DEBUG = False               # show/hide mesh
 ```
----
-## Requirements
-- Python 3.7+
-- OpenCV
-- Ultralytics YOLO
-- NumPy
+
+Landmark-based computations include:
+- Cheek distance → hat size
+- Forehead midpoint → hat placement
+- Cheek vector → head roll angle
 
 ---
+
+## Replacing the Hat Image
+
+You can replace `santa_hat.png` with any transparent PNG.
+
+```python
+santa_hat = cv2.imread("my_new_hat.png", cv3.IMREAD_UNCHANGED)
+```
+
+Adjust scale/offset/rotation factors accordingly.
+
+---
+
+## Folder Structure
+
+```
+yolo-santa-hat/
+│
+├── santa_hat_yolo.py
+├── santa_hat_mp.py
+├── santa_hat.png
+├── demo.webp
+├── requirements.txt
+└── photos/              # auto-created
+```
+
+---
+
+## Licence
+
+Distributed under the **MIT Licence**.
+
+---
+
 ## Contributing
 
-Feel free to submit issues or pull requests for new features or improvements. Contributions are always welcome! 😊
+PRs are welcome for:
+
+- New festive overlays 🎩  
+- Fun filters/effects  
+- Improvements to detection or hat placement  
+- Additional visual assets  
+
+Enjoy spreading Christmas cheer! 🎄✨

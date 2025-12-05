@@ -9,7 +9,7 @@ Perfect for festive photo booths, office parties, or just having fun 🎅
 
 ## Demo
 
-<img src="demo.webp" alt="Santa Hat Detection Demo" width="700">
+<img src="demo.webp" alt="Santa Hat Detection Demo" width="800">
 
 ---
 

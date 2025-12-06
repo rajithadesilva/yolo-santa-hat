@@ -182,6 +182,12 @@ Distributed under the **MIT Licence**.
 
 ---
 
+## Acknowledgements
+
+Face Detection Model: https://github.com/YapaLab/yolo-face <br>
+MediaPipe: https://github.com/google-ai-edge/mediapipe
+
+---
 ## Contributing
 
 PRs are welcome for:
